@@ -194,7 +194,14 @@ class _ChatsPageState extends State<ChatsPage>
         itemCount: sorted.length,
         itemBuilder: (context, index) {
           final data = sorted[index];
-          return _buildChatTile(data);
+          final chatId = SharedFuncs.getChatId(
+            uid: data.userInfoM?.value.uid,
+            gid: data.groupInfoM?.value.gid,
+          );
+          return KeyedSubtree(
+            key: ValueKey(chatId),
+            child: _buildChatTile(data),
+          );
         },
         separatorBuilder: (context, index) {
           return Divider(
