@@ -200,7 +200,33 @@ class _VoceUserAvatarState extends State<VoceUserAvatar> {
     final statusIndicatorSize = widget.size / 3;
 
     Widget badge = SizedBox.shrink();
-    if (widget.enableOnlineStatus && widget.uid != null) {
+    if (widget.isBot) {
+      // Bot 显示 bot 图标，根据在线状态变色
+      final onlineStatus = SharedFuncs.isSelf(widget.uid ?? -1)
+          ? ValueNotifier(true)
+          : App.app.onlineStatusMap[widget.uid] ?? ValueNotifier(false);
+
+      badge = ValueListenableBuilder<bool>(
+          valueListenable: enableOnlineStatus,
+          builder: (context, enabled, _) {
+            return ValueListenableBuilder<bool>(
+              valueListenable: onlineStatus,
+              builder: (context, isOnline, child) {
+                Color color;
+                if (isOnline && enabled) {
+                  color = Color.fromRGBO(34, 197, 94, 1);
+                } else {
+                  color = Color.fromRGBO(161, 161, 170, 1);
+                }
+                return ColorFiltered(
+                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                  child: Image.asset('assets/images/bot.png',
+                      width: statusIndicatorSize, height: statusIndicatorSize),
+                );
+              },
+            );
+          });
+    } else if (widget.enableOnlineStatus && widget.uid != null) {
       final onlineStatus = SharedFuncs.isSelf(widget.uid)
           ? ValueNotifier(true)
           : App.app.onlineStatusMap[widget.uid] ?? ValueNotifier(false);
@@ -226,9 +252,6 @@ class _VoceUserAvatarState extends State<VoceUserAvatar> {
               return SizedBox.shrink();
             }
           });
-    } else if (widget.isBot) {
-      badge = Image.asset('assets/images/bot.png',
-          width: statusIndicatorSize, height: statusIndicatorSize);
     } else {
       return SizedBox.shrink();
     }
