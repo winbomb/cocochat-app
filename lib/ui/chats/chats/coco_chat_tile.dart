@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cocochat_app/dao/init_dao/user_info.dart';
 import 'package:cocochat_app/helpers/time_helper.dart';
 import 'package:cocochat_app/models/ui_models/chat_tile_data.dart';
 import 'package:cocochat_app/ui/app_colors.dart';
@@ -210,17 +211,22 @@ class CocoChatTile extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    return ValueListenableBuilder(
-      valueListenable: tileData.avatarUpdatedAt,
-      builder: (context, value, child) {
-        if (tileData.isChannel) {
+    if (tileData.isChannel) {
+      return ValueListenableBuilder(
+        valueListenable: tileData.avatarUpdatedAt,
+        builder: (context, value, child) {
           return VoceChannelAvatar.channel(
               groupInfoM: tileData.groupInfoM!.value, size: VoceAvatarSize.s48);
-        } else {
+        },
+      );
+    } else {
+      return ValueListenableBuilder<UserInfoM>(
+        valueListenable: tileData.userInfoM!,
+        builder: (context, userInfoM, child) {
           return VoceUserAvatar.user(
-              userInfoM: tileData.userInfoM!.value, size: VoceAvatarSize.s48);
-        }
-      },
-    );
+              userInfoM: userInfoM, size: VoceAvatarSize.s48);
+        },
+      );
+    }
   }
 }

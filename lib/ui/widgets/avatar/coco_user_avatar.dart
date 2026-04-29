@@ -218,11 +218,8 @@ class _VoceUserAvatarState extends State<VoceUserAvatar> {
                 } else {
                   color = Color.fromRGBO(161, 161, 170, 1);
                 }
-                return ColorFiltered(
-                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                  child: Image.asset('assets/images/bot.png',
-                      width: statusIndicatorSize, height: statusIndicatorSize),
-                );
+                // 使用内置图标测试
+                return Icon(Icons.smart_toy, size: statusIndicatorSize, color: color);
               },
             );
           });
