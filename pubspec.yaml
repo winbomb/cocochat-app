@@ -113,7 +113,7 @@ dev_dependencies:
   # To Generate app icons for iOS and Android
   flutter_launcher_icons: ^0.14.4
 
-flutter_icons:
+flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/cocochat_icon.jpg"
